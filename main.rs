@@ -67,7 +67,44 @@ impl std::fmt::Display for ModernVector {
     }
 }
   
-// ADD IMPL FOR OPS
+impl ops::Add for ModernVector {
+    type Output = Self;
+    fn add(mut self, mut rhs: Self) -> Self {
+        self.0.append(&mut rhs.0);
+        ModernVector(self.0)
+    }
+}
+
+impl ops::AddAssign for ModernVector {
+    fn add_assign(&mut self, rhs: Self) {
+        *self = self.clone() + rhs.clone();
+    }
+}
+
+impl ops::Add<i64> for ModernVector {
+    type Output = Self;
+    fn add(mut self, to_add: i64) -> Self {
+        self.0.push(to_add);
+        ModernVector(self.0)
+    }
+}
+
+impl ops::AddAssign<i64> for ModernVector {
+    fn add_assign(&mut self, to_add: i64) {
+        *self = self.clone() + to_add;
+    }
+}
+
+impl ops::Mul<u8> for ModernVector {
+    type Output = Self;
+    fn mul(self, rhs: u8) -> Self {
+        let mut output = self.clone();
+        for _ in 0..rhs - 1 {
+            output += self.clone();
+        }
+        output
+    }
+}
 
 fn main() {
     let x = ModernVector::new(1);
